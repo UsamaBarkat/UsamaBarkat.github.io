@@ -92,31 +92,56 @@ document.querySelectorAll('.project-card, .skill-card').forEach((element, index)
     fadeObserver.observe(element);
 });
 
-// Contact Form Handling
+// Contact Form Handling with Formspree
 const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('form-status');
 
-contactForm.addEventListener('submit', (e) => {
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Get form values
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
+    // Disable submit button to prevent multiple submissions
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
 
-    // Create mailto link
-    const mailtoLink = `mailto:usamanizamani09@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    )}`;
+    // Get form data
+    const formData = new FormData(contactForm);
 
-    // Open email client
-    window.location.href = mailtoLink;
+    try {
+        // Send to Formspree
+        const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
 
-    // Show success message
-    showNotification('Thank you! Your default email client will open to send the message.', 'success');
+        if (response.ok) {
+            // Success
+            showNotification('Thank you! Your message has been sent successfully.', 'success');
+            formStatus.textContent = 'Message sent successfully!';
+            formStatus.style.color = '#2ecc71';
+            contactForm.reset();
+        } else {
+            // Error
+            throw new Error('Form submission failed');
+        }
+    } catch (error) {
+        showNotification('Oops! There was a problem sending your message. Please try again.', 'error');
+        formStatus.textContent = 'Error sending message. Please try again.';
+        formStatus.style.color = '#e74c3c';
+    } finally {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
 
-    // Reset form
-    contactForm.reset();
+        // Clear status message after 5 seconds
+        setTimeout(() => {
+            formStatus.textContent = '';
+        }, 5000);
+    }
 });
 
 // Notification function
@@ -133,11 +158,12 @@ function showNotification(message, type = 'info') {
     notification.textContent = message;
 
     // Add styles
+    const bgColor = type === 'success' ? '#2ecc71' : type === 'error' ? '#e74c3c' : '#3498db';
     notification.style.cssText = `
         position: fixed;
         top: 80px;
         right: 20px;
-        background-color: ${type === 'success' ? '#2ecc71' : '#3498db'};
+        background-color: ${bgColor};
         color: white;
         padding: 1rem 2rem;
         border-radius: 5px;
