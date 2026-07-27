@@ -420,6 +420,23 @@ section {
     color: var(--primary-color);
 }
 
+/* Status badge for projects with no live or repo link yet.
+   Deliberately not a link - nothing here should be clickable. */
+.project-status {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    background-color: rgba(231, 76, 60, 0.1);
+    border: 1px solid var(--accent-color);
+}
+
+.project-status i {
+    margin-right: 0.4rem;
+}
+
 /* Contact Section */
 .contact {
     background-color: var(--bg-light);
