@@ -10,7 +10,12 @@
     --secondary-color: #3498db;
     --accent-color: #e74c3c;
     --text-dark: #2c3e50;
-    --text-light: #7f8c8d;
+    /* Darkened from #7f8c8d (3.48:1 on white) to clear WCAG AA 4.5:1.
+       Now 5.42:1 on white and 4.72:1 on --bg-light. */
+    --text-light: #5d6d6e;
+    /* Hero gradient end. Darker than --secondary-color so white hero text
+       clears 4.5:1; --secondary-color itself is unchanged elsewhere. */
+    --hero-gradient-end: #2874a8;
     --bg-light: #ecf0f1;
     --bg-white: #ffffff;
     --transition: all 0.3s ease;
@@ -155,7 +160,7 @@ textarea:focus-visible,
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--hero-gradient-end) 100%);
     color: var(--bg-white);
     padding: 150px 0 100px;
     text-align: center;
@@ -171,14 +176,12 @@ textarea:focus-visible,
 .hero-subtitle {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    opacity: 0.9;
     animation: fadeInUp 0.8s ease 0.2s both;
 }
 
 .hero-description {
     font-size: 1.1rem;
     margin-bottom: 2rem;
-    opacity: 0.8;
     animation: fadeInUp 0.8s ease 0.4s both;
 }
 
