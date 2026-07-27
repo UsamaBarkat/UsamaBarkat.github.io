@@ -170,56 +170,13 @@ function showNotification(message, type = 'info') {
     notification.setAttribute('role', 'status');
     notification.textContent = message;
 
-    // Add styles
-    const bgColor = type === 'success' ? '#2ecc71' : type === 'error' ? '#e74c3c' : '#3498db';
-    notification.style.cssText = `
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        background-color: ${bgColor};
-        color: white;
-        padding: 1rem 2rem;
-        border-radius: 5px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-    `;
-
-    // Add animation keyframes
-    if (!document.querySelector('#notification-styles')) {
-        const style = document.createElement('style');
-        style.id = 'notification-styles';
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(400px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(400px);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
-    // Add to page
+    // Appearance lives in style.css: .notification plus the
+    // .notification-success / -error / -info modifiers.
     document.body.appendChild(notification);
 
     // Remove after 5 seconds
     setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
+        notification.classList.add('is-leaving');
         setTimeout(() => {
             notification.remove();
         }, 300);
@@ -279,35 +236,14 @@ scrollToTopBtn.type = 'button';
 scrollToTopBtn.innerHTML = '<i aria-hidden="true" class="fas fa-arrow-up"></i>';
 scrollToTopBtn.setAttribute('aria-label', 'Scroll to top');
 scrollToTopBtn.className = 'scroll-to-top';
-scrollToTopBtn.style.cssText = `
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #2c3e50, #3498db);
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    z-index: 1000;
-`;
 
+// Appearance lives in style.css: .scroll-to-top, with .is-visible
+// controlling whether it shows and :hover handling the lift.
 document.body.appendChild(scrollToTopBtn);
 
 // Show/hide scroll-to-top button
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        scrollToTopBtn.style.display = 'flex';
-    } else {
-        scrollToTopBtn.style.display = 'none';
-    }
+    scrollToTopBtn.classList.toggle('is-visible', window.scrollY > 300);
 });
 
 // Scroll to top functionality
@@ -318,16 +254,4 @@ scrollToTopBtn.addEventListener('click', () => {
     });
 });
 
-// Hover effect for scroll-to-top button
-scrollToTopBtn.addEventListener('mouseenter', () => {
-    scrollToTopBtn.style.transform = 'scale(1.1) translateY(-5px)';
-});
-
-scrollToTopBtn.addEventListener('mouseleave', () => {
-    scrollToTopBtn.style.transform = 'scale(1) translateY(0)';
-});
-
-// Console message for developers
-console.log('%c👋 Hello Developer!', 'color: #3498db; font-size: 20px; font-weight: bold;');
-console.log('%cThis portfolio was built by Usama Nizamani', 'color: #2c3e50; font-size: 14px;');
-console.log('%cInterested in AI and Automation? Let\'s connect!', 'color: #7f8c8d; font-size: 12px;');
+// Hover lift is handled by .scroll-to-top:hover in style.css.

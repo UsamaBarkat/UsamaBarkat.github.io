@@ -9,6 +9,7 @@
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
     --accent-color: #e74c3c;
+    --success-color: #2ecc71;
     --text-dark: #2c3e50;
     /* Darkened from #7f8c8d (3.48:1 on white) to clear WCAG AA 4.5:1.
        Now 5.42:1 on white and 4.72:1 on --bg-light. */
@@ -627,7 +628,87 @@ section {
     opacity: 0.8;
 }
 
+/* Toast notification - element is created by showNotification() in script.js */
+.notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    color: var(--bg-white);
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+}
+
+.notification-success {
+    background-color: var(--success-color);
+}
+
+.notification-error {
+    background-color: var(--accent-color);
+}
+
+.notification-info {
+    background-color: var(--secondary-color);
+}
+
+.notification.is-leaving {
+    animation: slideOut 0.3s ease;
+}
+
+/* Scroll-to-top button - element is created in script.js */
+.scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--bg-white);
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+.scroll-to-top.is-visible {
+    display: flex;
+}
+
+.scroll-to-top:hover {
+    transform: scale(1.1) translateY(-5px);
+}
+
 /* Animations */
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
