@@ -171,6 +171,9 @@ function showNotification(message, type = 'info') {
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
+    // role=status gives an implicit aria-live=polite, so the toast is
+    // announced instead of appearing silently.
+    notification.setAttribute('role', 'status');
     notification.textContent = message;
 
     // Add styles
