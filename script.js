@@ -22,6 +22,15 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
     });
 });
 
+// Escape closes the menu and returns focus to the toggle, so keyboard
+// users are never stranded inside a closed menu.
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+        setMenuOpen(false);
+        hamburger.focus();
+    }
+});
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
