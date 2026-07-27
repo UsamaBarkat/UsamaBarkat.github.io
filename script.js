@@ -37,24 +37,11 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Smooth scrolling for navigation links.
-// The skip link is excluded: this handler calls preventDefault(), which
-// would stop the browser moving focus to the target section.
-document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const navbarHeight = document.querySelector('.navbar')?.offsetHeight ?? 0;
-            const targetPosition = target.offsetTop - navbarHeight;
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
+// Smooth scrolling is handled entirely in CSS: html { scroll-behavior:
+// smooth } plus scroll-padding-top to clear the fixed navbar. The JS
+// implementation that used to live here was a duplicate of that, and it
+// called preventDefault(), which suppressed the browser's native focus
+// move to the target section.
 
 // Navbar background change on scroll
 window.addEventListener('scroll', () => {

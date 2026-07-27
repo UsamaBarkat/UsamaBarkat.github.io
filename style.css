@@ -23,6 +23,9 @@
 
 html {
     scroll-behavior: smooth;
+    /* Clears the fixed navbar (~70px: 2rem padding + 1.5rem brand line)
+       so anchor targets land below it rather than underneath. */
+    scroll-padding-top: 80px;
 }
 
 body {
