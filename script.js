@@ -31,8 +31,10 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+// Smooth scrolling for navigation links.
+// The skip link is excluded: this handler calls preventDefault(), which
+// would stop the browser moving focus to the target section.
+document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));

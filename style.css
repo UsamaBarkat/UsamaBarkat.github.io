@@ -34,6 +34,33 @@ body {
 }
 
 /* Navigation */
+/* Skip link - first focusable element, hidden until it receives focus.
+   Sits above the fixed navbar (z-index 1000). */
+.skip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--bg-white);
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom-right-radius: 6px;
+    transform: translateY(-200%);
+    transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+/* Programmatic focus target for the skip link - no visible ring on a
+   whole section, the scroll jump is the feedback. */
+.hero[tabindex="-1"]:focus {
+    outline: none;
+}
+
 .navbar {
     background-color: var(--primary-color);
     padding: 1rem 0;
