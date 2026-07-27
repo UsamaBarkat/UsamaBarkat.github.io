@@ -430,7 +430,17 @@ section {
     background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
     height: 100%;
     border-radius: 5px;
-    transition: width 1s ease;
+    transform-origin: left center;
+    /* Animates transform rather than width: transform is composited and
+       does not force layout on every frame. The inline width attribute
+       still carries each skill's value. */
+    transition: transform 1s ease;
+}
+
+/* Collapsed start state, applied by script.js rather than sitting in the
+   base rule, so the bars still render at full width without JS. */
+.skill-progress.is-collapsed {
+    transform: scaleX(0);
 }
 
 /* Projects Section */

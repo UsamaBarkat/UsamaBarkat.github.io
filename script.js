@@ -52,17 +52,17 @@ const observerOptions = {
     rootMargin: '0px 0px -100px 0px'
 };
 
+// Collapse the bars up front so they animate open when scrolled into
+// view. Done here rather than in the base CSS rule so that without JS
+// the bars simply render at their full width.
+document.querySelectorAll('.skill-progress').forEach(bar => {
+    bar.classList.add('is-collapsed');
+});
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            const skillProgress = entry.target.querySelector('.skill-progress');
-            if (skillProgress) {
-                const width = skillProgress.style.width;
-                skillProgress.style.width = '0%';
-                setTimeout(() => {
-                    skillProgress.style.width = width;
-                }, 100);
-            }
+            entry.target.querySelector('.skill-progress')?.classList.remove('is-collapsed');
             observer.unobserve(entry.target);
         }
     });
