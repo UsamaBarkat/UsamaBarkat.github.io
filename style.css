@@ -77,6 +77,13 @@ body {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    /* Reset the <button> back to the bare appearance the old <div> had */
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
 }
 
 .hamburger span {

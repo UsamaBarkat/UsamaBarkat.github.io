@@ -2,18 +2,23 @@
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+// Single source of truth for menu state, so the visual state and the
+// state announced to assistive tech can never drift apart.
+function setMenuOpen(isOpen) {
+    navMenu.classList.toggle('active', isOpen);
+    hamburger.classList.toggle('active', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+}
 
-    // Animate hamburger
-    hamburger.classList.toggle('active');
+hamburger.addEventListener('click', () => {
+    setMenuOpen(!navMenu.classList.contains('active'));
 });
 
 // Close mobile menu when clicking on a link
 document.querySelectorAll('.nav-menu a').forEach(link => {
     link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
+        setMenuOpen(false);
     });
 });
 
