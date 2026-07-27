@@ -43,16 +43,8 @@ document.addEventListener('keydown', (e) => {
 // called preventDefault(), which suppressed the browser's native focus
 // move to the target section.
 
-// Navbar background change on scroll
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
-    if (window.scrollY > 50) {
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.2)';
-    } else {
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-    }
-});
+// Navbar shadow and scroll-to-top visibility share one scroll listener,
+// registered at the end of this file once both elements exist.
 
 // Animate skill bars when in viewport
 const observerOptions = {
@@ -239,12 +231,8 @@ scrollToTopBtn.className = 'scroll-to-top';
 
 // Appearance lives in style.css: .scroll-to-top, with .is-visible
 // controlling whether it shows and :hover handling the lift.
+// Visibility is toggled by the shared scroll listener above.
 document.body.appendChild(scrollToTopBtn);
-
-// Show/hide scroll-to-top button
-window.addEventListener('scroll', () => {
-    scrollToTopBtn.classList.toggle('is-visible', window.scrollY > 300);
-});
 
 // Scroll to top functionality
 scrollToTopBtn.addEventListener('click', () => {
@@ -255,3 +243,22 @@ scrollToTopBtn.addEventListener('click', () => {
 });
 
 // Hover lift is handled by .scroll-to-top:hover in style.css.
+
+// Everything that reacts to scroll position shares one passive listener,
+// throttled to a single run per animation frame. Previously the navbar
+// shadow and this button each had their own unthrottled listener.
+// Scroll-spy is deliberately absent: it runs on IntersectionObserver and
+// needs no scroll events at all.
+const navbarEl = document.querySelector('.navbar');
+let scrollFrame = 0;
+
+function onScrollFrame() {
+    scrollFrame = 0;
+    const y = window.scrollY;
+    navbarEl?.classList.toggle('is-scrolled', y > 50);
+    scrollToTopBtn.classList.toggle('is-visible', y > 300);
+}
+
+window.addEventListener('scroll', () => {
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(onScrollFrame);
+}, { passive: true });
