@@ -34,6 +34,24 @@ body {
 }
 
 /* Navigation */
+/* Visible keyboard focus on every interactive element.
+   Dark ring by default for light backgrounds; white ring on the dark
+   navbar and the hero gradient. Both clear 3:1 against their surface. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.navbar a:focus-visible,
+.hamburger:focus-visible,
+.hero a:focus-visible {
+    outline-color: var(--bg-white);
+}
+
 /* Skip link - first focusable element, hidden until it receives focus.
    Sits above the fixed navbar (z-index 1000). */
 .skip-link {
@@ -566,7 +584,6 @@ section {
 
 .form-group input:focus,
 .form-group textarea:focus {
-    outline: none;
     border-color: var(--secondary-color);
 }
 
