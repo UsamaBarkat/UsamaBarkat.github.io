@@ -126,6 +126,23 @@ textarea:focus-visible,
     color: var(--secondary-color);
 }
 
+/* Current section indicator, set by the scroll-spy observer. */
+.nav-menu a.active {
+    color: var(--secondary-color);
+    position: relative;
+}
+
+.nav-menu a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--secondary-color);
+}
+
 .hamburger {
     display: none;
     flex-direction: column;

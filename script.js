@@ -226,28 +226,52 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
-// Add active state to navigation based on scroll position
-window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-menu a');
-
-    let current = '';
-
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= sectionTop - 100) {
-            current = section.getAttribute('id');
-        }
-    });
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
+// Scroll-spy: highlight the nav link for the section currently on screen.
+// Uses IntersectionObserver rather than a scroll handler - the previous
+// implementation ran querySelectorAll twice and read offsetTop and
+// clientHeight on every scroll event, forcing layout each tick.
+const spySections = document.querySelectorAll('section[id]');
+const navLinksById = new Map();
+document.querySelectorAll('.nav-menu a[href^="#"]').forEach(link => {
+    navLinksById.set(link.getAttribute('href').slice(1), link);
 });
+
+if (spySections.length && navLinksById.size) {
+    const visible = new Set();
+
+    const setActiveLink = () => {
+        // With several sections on screen, pick the one nearest the top.
+        let best = null;
+        let bestTop = Infinity;
+        visible.forEach(section => {
+            const top = Math.abs(section.getBoundingClientRect().top);
+            if (top < bestTop) {
+                bestTop = top;
+                best = section;
+            }
+        });
+
+        navLinksById.forEach(link => link.classList.remove('active'));
+        if (best) navLinksById.get(best.id)?.classList.add('active');
+    };
+
+    const spyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                visible.add(entry.target);
+            } else {
+                visible.delete(entry.target);
+            }
+        });
+        setActiveLink();
+    }, {
+        // Bias the viewport upward so the section under the navbar wins.
+        rootMargin: '-80px 0px -60% 0px',
+        threshold: 0
+    });
+
+    spySections.forEach(section => spyObserver.observe(section));
+}
 
 // Add scroll-to-top button
 const scrollToTopBtn = document.createElement('button');
