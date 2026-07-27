@@ -254,7 +254,9 @@ window.addEventListener('scroll', () => {
 
 // Add scroll-to-top button
 const scrollToTopBtn = document.createElement('button');
-scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+scrollToTopBtn.type = 'button';
+scrollToTopBtn.innerHTML = '<i aria-hidden="true" class="fas fa-arrow-up"></i>';
+scrollToTopBtn.setAttribute('aria-label', 'Scroll to top');
 scrollToTopBtn.className = 'scroll-to-top';
 scrollToTopBtn.style.cssText = `
     position: fixed;
