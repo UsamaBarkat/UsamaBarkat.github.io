@@ -1,3 +1,8 @@
+// This file is loaded as type="module": it is deferred automatically and
+// its top level is module scope, so nothing here leaks onto window.
+// DOM lookups are null-guarded so a markup change cannot take out every
+// feature below it.
+
 // Mobile Menu Toggle
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
@@ -5,14 +10,15 @@ const navMenu = document.querySelector('.nav-menu');
 // Single source of truth for menu state, so the visual state and the
 // state announced to assistive tech can never drift apart.
 function setMenuOpen(isOpen) {
+    if (!hamburger || !navMenu) return;
     navMenu.classList.toggle('active', isOpen);
     hamburger.classList.toggle('active', isOpen);
     hamburger.setAttribute('aria-expanded', String(isOpen));
     hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
 }
 
-hamburger.addEventListener('click', () => {
-    setMenuOpen(!navMenu.classList.contains('active'));
+hamburger?.addEventListener('click', () => {
+    setMenuOpen(!navMenu?.classList.contains('active'));
 });
 
 // Close mobile menu when clicking on a link
@@ -25,9 +31,9 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
 // Escape closes the menu and returns focus to the toggle, so keyboard
 // users are never stranded inside a closed menu.
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+    if (e.key === 'Escape' && navMenu?.classList.contains('active')) {
         setMenuOpen(false);
-        hamburger.focus();
+        hamburger?.focus();
     }
 });
 
@@ -39,7 +45,7 @@ document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(anchor => {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            const navbarHeight = document.querySelector('.navbar')?.offsetHeight ?? 0;
             const targetPosition = target.offsetTop - navbarHeight;
 
             window.scrollTo({
@@ -53,6 +59,7 @@ document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(anchor => {
 // Navbar background change on scroll
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
     if (window.scrollY > 50) {
         navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.2)';
     } else {
@@ -112,7 +119,7 @@ document.querySelectorAll('.project-card, .skill-card').forEach((element, index)
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('form-status');
 
-contactForm.addEventListener('submit', async (e) => {
+contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Disable submit button to prevent multiple submissions
