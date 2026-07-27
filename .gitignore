@@ -1,0 +1,9 @@
+# Spec-Driven Development working docs — kept local, never deployed.
+# The repo root is served publicly by Vercel, so anything committed here
+# is readable at https://usamanizamani.vercel.app/<filename>.
+research.md
+spec.md
+plan.md
+
+# Claude Code local configuration and permissions
+.claude/
