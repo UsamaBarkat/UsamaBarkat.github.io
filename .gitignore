@@ -5,5 +5,9 @@ research.md
 spec.md
 plan.md
 
+# Project memory for Claude Code. Kept local: it was being served at
+# /CLAUDE.md, and it is a working note rather than site content.
+CLAUDE.md
+
 # Claude Code local configuration and permissions
 .claude/
