@@ -371,6 +371,24 @@ section {
     margin-bottom: 0.5rem;
 }
 
+/* "View Certificate" link, shown under an education entry that has a
+   downloadable certificate. Matches .project-link's weight and colour. */
+.edu-certificate-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.edu-certificate-link:hover {
+    color: var(--primary-color);
+}
+
 .edu-description {
     color: var(--text-light);
     margin-bottom: 0;
